@@ -1,0 +1,62 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.5'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'net.ltgt.apt' version '0.21'
+}
+
+group = 'com.adem'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+ext {
+	springBootStarterVersion = '2.5.5'
+	postgreSqlVersion = '42.2.24'
+	lombokVersion = '1.18.20'
+	mapstructVersion = '1.4.2.Final'
+	lombokMapstructBindingVersion = "0.2.0"
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+subprojects {
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'java'
+
+	dependencies {
+		implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootStarterVersion}"
+		implementation "org.springframework.boot:spring-boot-starter-web:${springBootStarterVersion}"
+		implementation "org.postgresql:postgresql:${postgreSqlVersion}"
+		testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootStarterVersion}"
+		implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.2'
+
+		implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+		implementation "org.projectlombok:lombok:$lombokVersion"
+
+
+		annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+		annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+		annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
+
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
+
+bootJar {
+	enabled = false
+}
